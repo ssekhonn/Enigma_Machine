@@ -84,3 +84,9 @@ def keyword_decrypt(text, keyword):
             result += char
 
     return result
+
+# Reverse Cipher (simple bonus feature)
+
+
+def reverse_cipher(text):
+    return text[::-1]
