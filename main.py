@@ -19,3 +19,7 @@ PSEUDOCODE
 10. Add secret feature (admin or random shift)
 
 '''
+
+
+def clean_text(text):  # Clean text by removing leading/trailing spaces
+    return text.strip()
