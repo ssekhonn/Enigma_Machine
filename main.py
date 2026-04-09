@@ -24,8 +24,10 @@ PSEUDOCODE
 def clean_text(text):  # Clean text by removing leading/trailing spaces
     return text.strip()
 
+# Caesar Cipher Encryption
 
-def caesar_encrypt(text, shift):  # Caesar Cipher Encryption
+
+def caesar_encrypt(text, shift):
     result = ""
 
     for char in text:
@@ -45,3 +47,40 @@ def caesar_encrypt(text, shift):  # Caesar Cipher Encryption
 def caesar_decrypt(text, shift):  # Caesar Cipher Decryption
     return caesar_encrypt(text, -shift)
 # modulo wraps letters around alphabet
+
+# Keyword Cipher Encryption
+
+
+def keyword_encrypt(text, keyword):
+    result = ""
+    keyword = keyword.lower()
+    key_index = 0
+
+    for char in text:
+        if char.isalpha():
+            shift = ord(keyword[key_index % len(keyword)]) - ord('a')
+            new_char = chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+            result += new_char
+            key_index += 1
+        else:
+            result += char
+
+    return result
+
+
+# Keyword Cipher Decryption
+def keyword_decrypt(text, keyword):
+    result = ""
+    keyword = keyword.lower()
+    key_index = 0
+
+    for char in text:
+        if char.isalpha():
+            shift = ord(keyword[key_index % len(keyword)]) - ord('a')
+            new_char = chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+            result += new_char
+            key_index += 1
+        else:
+            result += char
+
+    return result
