@@ -23,3 +23,25 @@ PSEUDOCODE
 
 def clean_text(text):  # Clean text by removing leading/trailing spaces
     return text.strip()
+
+
+def caesar_encrypt(text, shift):  # Caesar Cipher Encryption
+    result = ""
+
+    for char in text:
+        if char.isalpha():
+            # Convert to lowercase
+            char = char.lower()
+
+            # Shift character
+            new_char = chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+            result += new_char
+        else:
+            result += char
+
+    return result
+
+
+def caesar_decrypt(text, shift):  # Caesar Cipher Decryption
+    return caesar_encrypt(text, -shift)
+# modulo wraps letters around alphabet
