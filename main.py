@@ -7,7 +7,7 @@ PSEUDOCODE
 3. If encrypt:
       ask for message
       clean message (strip spaces)
-      ask for cipher type (caesar, reverse, keyword)
+      ask for cipher type (reverse, keyword)
       apply encryption
 4. If decrypt:
       same process but reverse
@@ -19,38 +19,16 @@ PSEUDOCODE
 10. Add secret feature (admin or random shift)
 
 '''
+# ENIGMA MACHINE PROJECT
+
+import random
 
 
-def clean_text(text):  # Clean text by removing leading/trailing spaces
+def clean_text(text):
     return text.strip()
 
-# Caesar Cipher Encryption
-
-
-def caesar_encrypt(text, shift):
-    result = ""
-
-    for char in text:
-        if char.isalpha():
-            # Convert to lowercase
-            char = char.lower()
-
-            # Shift character
-            new_char = chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
-            result += new_char
-        else:
-            result += char
-
-    return result
-
-
-def caesar_decrypt(text, shift):  # Caesar Cipher Decryption
-    return caesar_encrypt(text, -shift)
-# modulo wraps letters around alphabet
 
 # Keyword Cipher Encryption
-
-
 def keyword_encrypt(text, keyword):
     result = ""
     keyword = keyword.lower()
@@ -59,7 +37,8 @@ def keyword_encrypt(text, keyword):
     for char in text:
         if char.isalpha():
             shift = ord(keyword[key_index % len(keyword)]) - ord('a')
-            new_char = chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+            new_char = chr((ord(char.lower()) - ord('a') + shift) %
+                           26 + ord('a'))
             result += new_char
             key_index += 1
         else:
@@ -77,7 +56,8 @@ def keyword_decrypt(text, keyword):
     for char in text:
         if char.isalpha():
             shift = ord(keyword[key_index % len(keyword)]) - ord('a')
-            new_char = chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+            new_char = chr((ord(char.lower()) - ord('a') - shift) %
+                           26 + ord('a'))
             result += new_char
             key_index += 1
         else:
@@ -85,25 +65,103 @@ def keyword_decrypt(text, keyword):
 
     return result
 
-# Reverse Cipher (simple bonus feature)
 
-
+# Reverse Cipher
 def reverse_cipher(text):
     return text[::-1]
 
 
-# Store history of operations
+# Store history
 history = []
 
-# Test function to verify cipher works
 
-
+# FIXED test function
 def test_cipher():
     original = "hello"
-    encrypted = caesar_encrypt(original, 3)
-    decrypted = caesar_decrypt(encrypted, 3)
+    keyword = "key"
+
+    encrypted = keyword_encrypt(original, keyword)
+    decrypted = keyword_decrypt(encrypted, keyword)
 
     if original == decrypted:
         print("Test passed!")
     else:
         print("Test failed!")
+
+
+while True:
+    print("\nENIGMA MACHINE")
+    print("1. Encrypt")
+    print("2. Decrypt")
+    print("3. View History")
+    print("4. Run Test")
+    print("5. Quit")
+
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+        message = clean_text(input("Enter MESSAGE: "))
+
+        # Secret feature
+        if message == "admin":
+            print("Access granted")
+            continue
+
+        print("Choose cipher:")
+        print("1. Keyword")
+        print("2. Reverse")
+
+        cipher_choice = input("Enter option: ")
+
+        if cipher_choice == "1":
+            keyword = input("Enter keyword: ")
+            result = keyword_encrypt(message, keyword)
+
+        elif cipher_choice == "2":
+            result = reverse_cipher(message)
+
+        else:
+            print("Invalid option")
+            continue
+
+        print("Encrypted message:", result)
+        history.append(("Encrypt", message, result))
+
+    elif choice == "2":
+        message = clean_text(input("Enter message: "))
+
+        print("Choose cipher:")
+        print("1. Keyword")
+        print("2. Reverse")
+
+        cipher_choice = input("Enter option: ")
+
+        if cipher_choice == "1":
+            keyword = input("Enter keyword: ")
+            result = keyword_decrypt(message, keyword)
+
+        elif cipher_choice == "2":
+            result = reverse_cipher(message)
+
+        else:
+            print("Invalid option")
+            continue
+
+        print("Decrypted message:", result)
+        history.append(("Decrypt", message, result))
+
+    elif choice == "3":
+        print("\nHISTORY")
+        for item in history:
+            action, original, result = item
+            print(f"{action}: {original} → {result}")
+
+    elif choice == "4":
+        test_cipher()
+
+    elif choice == "5":
+        print("Goodbye!")
+        break
+
+    else:
+        print("Invalid choice")
