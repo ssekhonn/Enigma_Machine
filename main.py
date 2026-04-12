@@ -94,3 +94,16 @@ def reverse_cipher(text):
 
 # Store history of operations
 history = []
+
+# Test function to verify cipher works
+
+
+def test_cipher():
+    original = "hello"
+    encrypted = caesar_encrypt(original, 3)
+    decrypted = caesar_decrypt(encrypted, 3)
+
+    if original == decrypted:
+        print("Test passed!")
+    else:
+        print("Test failed!")
