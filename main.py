@@ -90,3 +90,7 @@ def keyword_decrypt(text, keyword):
 
 def reverse_cipher(text):
     return text[::-1]
+
+
+# Store history of operations
+history = []
