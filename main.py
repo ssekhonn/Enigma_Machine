@@ -1,41 +1,42 @@
-
 # ENIGMA MACHINE PROJECT
+
 '''
 PSEUDOCODE
-1. Display menu (encrypt, decrypt, quit, history, test)
-2. Ask user for choice
-3. If encrypt:
-      ask for message
-      clean message (strip spaces)
-      ask for cipher type (reverse, keyword)
-      apply encryption
-4. If decrypt:
-      same process but reverse
-5. Store result in history list
-6. Allow user to view history
-7. Allow user to run test function
-8. Repeat program using loop
-9. Handle invalid input using try/except
-10. Add secret feature (admin or random shift)
-
+1. Show menu (encrypt, decrypt, history, test, quit)
+2. Ask user for input
+3. Clean message (strip spaces)
+4. Convert message into a LIST
+5. Choose cipher (keyword or reverse)
+6. Call function with LIST parameter
+7. Store results in history
+8. Allow repeated use with loop
+9. Handle errors using try/except
+10. Display clean formatted output
 '''
-# ENIGMA MACHINE PROJECT
 
 import random
 
 
+# Clean input
 def clean_text(text):
     return text.strip()
 
 
-# Keyword Cipher Encryption
-def keyword_encrypt(text, keyword):
+# Format output nicely
+def format_output(label, message):
+    print(f"\n___{label}___")
+    print(message)
+    print("_________\n")
+
+
+# Keyword Cipher Encryption (uses LIST)
+def keyword_encrypt(message_list, keyword):
     result = ""
     keyword = keyword.lower()
     key_index = 0
 
-    for char in text:
-        if char.isalpha():
+    for char in message_list:
+        if char.isalpha():  # condition
             shift = ord(keyword[key_index % len(keyword)]) - ord('a')
             new_char = chr((ord(char.lower()) - ord('a') + shift) %
                            26 + ord('a'))
@@ -47,13 +48,13 @@ def keyword_encrypt(text, keyword):
     return result
 
 
-# Keyword Cipher Decryption
-def keyword_decrypt(text, keyword):
+# Keyword Cipher Decryption (uses LIST)
+def keyword_decrypt(message_list, keyword):
     result = ""
     keyword = keyword.lower()
     key_index = 0
 
-    for char in text:
+    for char in message_list:
         if char.isalpha():
             shift = ord(keyword[key_index % len(keyword)]) - ord('a')
             new_char = chr((ord(char.lower()) - ord('a') - shift) %
@@ -66,95 +67,111 @@ def keyword_decrypt(text, keyword):
     return result
 
 
-# Reverse Cipher
-def reverse_cipher(text):
-    return text[::-1]
+# Reverse Cipher (also uses LIST for consistency)
+def reverse_cipher(message_list):
+    return "".join(message_list[::-1])
 
 
-# Store history
+# Store history using LIST of TUPLES (data structure mastery)
 history = []
 
 
-# FIXED test function
+# Test function
 def test_cipher():
-    original = "hello"
+    original = "hello world"
     keyword = "key"
 
-    encrypted = keyword_encrypt(original, keyword)
-    decrypted = keyword_decrypt(encrypted, keyword)
+    message_list = list(original)
+
+    encrypted = keyword_encrypt(message_list, keyword)
+    decrypted = keyword_decrypt(list(encrypted), keyword)
 
     if original == decrypted:
-        print("Test passed!")
+        print("\nTest passed! Cipher works correctly.\n")
     else:
-        print("Test failed!")
+        print("\nTest failed.\n")
 
 
+# MAIN PROGRAM LOOP
 while True:
-    print("\nENIGMA MACHINE")
+    print("\n ___ ENIGMA MACHINE ___ ")
     print("1. Encrypt")
     print("2. Decrypt")
     print("3. View History")
     print("4. Run Test")
     print("5. Quit")
 
-    choice = input("Enter choice: ")
+    choice = input("Enter choice: ").strip()
 
     if choice == "1":
         message = clean_text(input("Enter MESSAGE: "))
 
         # Secret feature
-        if message == "admin":
+        if message.lower() == "admin":
             print("Access granted")
             continue
 
-        print("Choose cipher:")
+        message_list = list(message)
+
+        print("\nChoose cipher:")
         print("1. Keyword")
         print("2. Reverse")
 
-        cipher_choice = input("Enter option: ")
+        cipher_choice = input("Enter option: ").strip()
 
-        if cipher_choice == "1":
-            keyword = input("Enter keyword: ")
-            result = keyword_encrypt(message, keyword)
+        try:
+            if cipher_choice == "1":
+                keyword = input("Enter keyword: ").strip()
+                result = keyword_encrypt(message_list, keyword)
 
-        elif cipher_choice == "2":
-            result = reverse_cipher(message)
+            elif cipher_choice == "2":
+                result = reverse_cipher(message_list)
 
-        else:
-            print("Invalid option")
-            continue
+            else:
+                print("Invalid option")
+                continue
 
-        print("Encrypted message:", result)
-        history.append(("Encrypt", message, result))
+            format_output("Encrypted Message", result)
+            history.append(("Encrypt", message, result))
+
+        except:
+            print("Error occurred during encryption")
 
     elif choice == "2":
         message = clean_text(input("Enter message: "))
+        message_list = list(message)
 
-        print("Choose cipher:")
+        print("\nChoose cipher:")
         print("1. Keyword")
         print("2. Reverse")
 
-        cipher_choice = input("Enter option: ")
+        cipher_choice = input("Enter option: ").strip()
 
-        if cipher_choice == "1":
-            keyword = input("Enter keyword: ")
-            result = keyword_decrypt(message, keyword)
+        try:
+            if cipher_choice == "1":
+                keyword = input("Enter keyword: ").strip()
+                result = keyword_decrypt(message_list, keyword)
 
-        elif cipher_choice == "2":
-            result = reverse_cipher(message)
+            elif cipher_choice == "2":
+                result = reverse_cipher(message_list)
 
-        else:
-            print("Invalid option")
-            continue
+            else:
+                print("Invalid option")
+                continue
 
-        print("Decrypted message:", result)
-        history.append(("Decrypt", message, result))
+            format_output("Decrypted Message", result)
+            history.append(("Decrypt", message, result))
+
+        except:
+            print("Error occurred during decryption")
 
     elif choice == "3":
-        print("\nHISTORY")
-        for item in history:
-            action, original, result = item
-            print(f"{action}: {original} → {result}")
+        print("\n___ HISTORY ___")
+        if not history:
+            print("No history yet.")
+        else:
+            for action, original, result in history:
+                print(f"{action}: {original} → {result}")
 
     elif choice == "4":
         test_cipher()
