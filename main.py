@@ -17,30 +17,37 @@ PSEUDOCODE
 # Clean input
 
 
-def clean_text(text):
+def clean_text(text):  # (text) in basicest words means the string of characters that the user inputs. This function is designed to clean that input by removing any unwanted spaces. The .strip() method is used to remove leading and trailing spaces from the input text, ensuring that the message is processed without extra spaces at the beginning or end. However, it keeps internal spaces intact, allowing for proper formatting of sentences and phrases.
+    # this removes leading and trailing spaces, but keeps internal spaces intact by default. If you want to remove all spaces, you can use text.replace(" ", "") instead.
     return text.strip()
 
 # Format output nicely
 
+# parameter means the actual content that you want to display to the user. The function formats the output by printing a header with the label, followed by the message itself, and then a footer to visually separate it from other outputs., and the string means the actual content that you want to display to the user. The function formats the output by printing a header with the label, followed by the message itself, and then a footer to visually separate it from other outputs.
 
-def format_output(label, message):
+
+def format_output(label, message):  # (label, message) are the parameters that the function takes. The label is a string that describes the type of message being displayed (e.g., "Encrypted Message" or "Decrypted Message"), while the message is the actual content that you want to display to the user. The function formats the output by printing a header with the label, followed by the message itself, and then a footer to visually separate it from other outputs.
+    # this is the header that displays the label (e.g., "Encrypted Message" or "Decrypted Message") in a visually distinct way. The underscores create a border around the label to make it stand out.
     print(f"\n___ {label} ___")
+    # this is the actual content of the message that you want to display to the user. It will be printed below the header, allowing the user to easily see the result of their encryption or decryption.
     print(message)
+    # this is the footer that visually separates the output from other outputs. It creates a line of underscores to indicate the end of the current message, making it easier for the user to distinguish between different outputs when they are displayed in sequence.
     print("_______________\n")
 
 # Keyword Cipher Encryption
 
 
-def keyword_encrypt(message_list, keyword):
+def keyword_encrypt(message_list, keyword):  # (message_list, keyword) are the parameters that the function takes. The message_list is a list of characters that represents the message to be encrypted, while the keyword is a string that will be used to determine how each letter in the message should be shifted. The function processes each character in the message_list, applying a shift based on the corresponding character in the keyword, and returns the resulting encrypted message as a string.
     if not keyword:
         raise ValueError("Keyword cannot be empty")
-
-    result = ""
+# we didn't use list here because in simple words the keyword is a string that will be used to determine how each letter in the message should be shifted. The function processes each character in the message_list, applying a shift based on the corresponding character in the keyword, and returns the resulting encrypted message as a string. Since we are only using the keyword to determine the shift for each letter, we can work with it as a string without needing to convert it into a list. The function will access individual characters of the keyword using indexing, which works directly with strings in Python.
+    result = ""  # this variable will be used to build the encrypted message as the function processes each character in the message_list. It starts as an empty string and characters will be added to it one by one as they are encrypted.
     keyword = keyword.lower()
     key_index = 0
 
     for char in message_list:
         if char.isalpha():
+            # ord() function returns the Unicode code point (integer value) of a given single character.
             shift = ord(keyword[key_index % len(keyword)]) - ord('a')
 
             base = ord('A') if char.isupper() else ord('a')
@@ -82,6 +89,7 @@ def keyword_decrypt(message_list, keyword):
 
 
 def reverse_cipher(message_list):
+    # This line takes the message_list, reverses it using slicing with a step of -1 (message_list[::-1]), and then joins the reversed list of characters back into a single string using the join() method. The result is the original message reversed, which is the output of the reverse cipher.
     return "".join(message_list[::-1])
 
 
