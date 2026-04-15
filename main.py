@@ -90,6 +90,7 @@ def keyword_decrypt(message_list, keyword):
 
 def reverse_cipher(message_list):
     # This line takes the message_list, reverses it using slicing with a step of -1 (message_list[::-1]), and then joins the reversed list of characters back into a single string using the join() method. The result is the original message reversed, which is the output of the reverse cipher.
+    # this doe both encryption and decryption because reversing a message twice will return it to its original form. So, the same function can be used for both processes.
     return "".join(message_list[::-1])
 
 
