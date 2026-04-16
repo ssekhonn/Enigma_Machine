@@ -47,10 +47,13 @@ def keyword_encrypt(message_list, keyword):  # (message_list, keyword) are the p
 
     for char in message_list:
         if char.isalpha():
-            # ord() function returns the Unicode code point (integer value) of a given single character.
+
+            # this line calculates the shift value for the current character in the message based on the corresponding character in the keyword. It uses the ord() function to get the Unicode code point of the keyword character and subtracts the code point of 'a' to get a zero-based index (0 for 'a', 1 for 'b', ..., 25 for 'z'). The key_index % len(keyword) ensures that we loop through the keyword characters repeatedly as we process the message.
             shift = ord(keyword[key_index % len(keyword)]) - ord('a')
 
+            # this line determines the base Unicode code point for the character being processed. If the character is uppercase, it sets the base to the code point of 'A'; if it's lowercase, it sets the base to the code point of 'a'. This allows the function to correctly handle both uppercase and lowercase letters when applying the shift.
             base = ord('A') if char.isupper() else ord('a')
+            # in simpleast,easist terms, this line applies the calculated shift to the current character. It first converts the character to a zero-based index by subtracting the base, then adds the shift value, and uses modulo 26 to wrap around the alphabet if necessary. Finally, it converts the resulting index back to a character using the chr() function and adds the base back to get the correct Unicode code point for the new character.
             new_char = chr((ord(char) - base + shift) % 26 + base)
 
             result += new_char
@@ -63,7 +66,7 @@ def keyword_encrypt(message_list, keyword):  # (message_list, keyword) are the p
 # Keyword Cipher Decryption
 
 
-def keyword_decrypt(message_list, keyword):
+def keyword_decrypt(message_list, keyword):  # (message_list, keyword) are the parameters that the function takes. The message_list is a list of characters that represents the message to be decrypted, while the keyword is a string that will be used to determine how each letter in the message should be shifted back to its original form. The function processes each character in the message_list, applying a reverse shift based on the corresponding character in the keyword, and returns the resulting decrypted message as a string.
     if not keyword:
         raise ValueError("Keyword cannot be empty")
 
