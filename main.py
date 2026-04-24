@@ -55,6 +55,7 @@ def keyword_encrypt(message_list, keyword):  # (message_list, keyword) are the p
             base = ord('A') if char.isupper() else ord('a')
             # in simpleast,easist terms, this line applies the calculated shift to the current character. It first converts the character to a zero-based index by subtracting the base, then adds the shift value, and uses modulo 26 to wrap around the alphabet if necessary. Finally, it converts the resulting index back to a character using the chr() function and adds the base back to get the correct Unicode code point for the new character.
             new_char = chr((ord(char) - base + shift) % 26 + base)
+            '''   n  '''
 
             result += new_char
             key_index += 1
@@ -239,6 +240,7 @@ while True:
         if not history:
             print("No history yet.")
         else:
+            # enumerate means it allows us to loop through the history list while keeping track of the index (i) for each entry. The start=1 parameter means that the index will start from 1 instead of the default 0, which is more user-friendly when displaying the history. Each entry in the history is unpacked into action, original, and result variables for easy access when printing the details of each encryption or decryption action.
             for i, (action, original, result) in enumerate(history, start=1):
                 print(f"{i}. {action}")
                 print(f"   Original : {original}")
