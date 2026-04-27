@@ -55,8 +55,14 @@ def keyword_encrypt(message_list, keyword):  # (message_list, keyword) are the p
             base = ord('A') if char.isupper() else ord('a')
             # in simpleast,easist terms, this line applies the calculated shift to the current character. It first converts the character to a zero-based index by subtracting the base, then adds the shift value, and uses modulo 26 to wrap around the alphabet if necessary. Finally, it converts the resulting index back to a character using the chr() function and adds the base back to get the correct Unicode code point for the new character.
             new_char = chr((ord(char) - base + shift) % 26 + base)
-            '''   n  '''
-
+#             'H' → ord('H') = 72
+#                 base = 65 (uppercase)
+#                 72 - 65 = 7        ← 'H' becomes 7
+#                 7 + 5 = 12         ← apply shift
+#                 12 % 26 = 12       ← still inside alphabet
+#                 12 + 65 = 77       ← convert back to ASCII
+#                 chr(77) = 'M'      ← final encrypted letter
+# we need keyword to determine the shift for each letter in the message. The function processes each character in the message_list, applying a shift based on the corresponding character in the keyword, and returns the resulting encrypted message as a string. Since we are only using the keyword to determine the shift for each letter, we can work with it as a string without needing to convert it into a list. The function will access individual characters of the keyword using indexing, which works directly with strings in Python.
             result += new_char
             key_index += 1
         else:
